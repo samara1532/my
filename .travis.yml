@@ -1,0 +1,17 @@
+language: generic
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install gcc-arm-none-eabi gcc-aarch64-linux-gnu
+
+script:
+- bash build.sh
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: "build_dir/*"
+  skip_cleanup: true
+  overwrite: true
+  draft: true
+  all_branches: true
