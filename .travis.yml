@@ -8,13 +8,11 @@ script:
 - bash build.sh
 
 os: linux
-dist: disco
+dist: bionic
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file: "build_dir/*"
-  skip_cleanup: true
+  file: build_dir/*
   overwrite: true
-  draft: true
-  all_branches: true
+  draft: false
