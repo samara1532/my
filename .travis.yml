@@ -13,6 +13,7 @@ dist: bionic
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
+  file_glob: true
   file: build_dir/*
   overwrite: true
   draft: false
