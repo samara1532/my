@@ -32,10 +32,10 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        #if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
+          body_path: build_info.txt
           draft: true
-          files: build_dir/*
-          tag_name: test3
+          files: output_dir/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
