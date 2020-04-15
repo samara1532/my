@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -o pipefail
+set -x -e -o pipefail
 
 rm -rf build_dir
 rm -rf source_dir
@@ -29,4 +29,8 @@ M0_CROSS_COMPILE="arm-none-eabi-" \
 PLAT=rk3399 \
 bl31
 
+pwd
+ls -lah
+ls -lah ${ATF_DIR}/build/rk3399/release/bl31
 cp ${ATF_DIR}/build/rk3399/release/bl31/bl31.elf build_dir/
+ls -lah build_dir
