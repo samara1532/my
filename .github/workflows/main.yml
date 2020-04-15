@@ -35,7 +35,7 @@ jobs:
         #if: startsWith(github.ref, 'refs/tags/')
         with:
           draft: true
-          files: $GITHUB_WORKSPACE/build_dir/*
+          files: ${{ GITHUB_WORKSPACE }}/build_dir/*
           tag_name: test2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
