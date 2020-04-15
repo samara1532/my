@@ -98,7 +98,7 @@ cat << EOF > build_info.txt
 build epoch: $ATF_BUILD_EPOCH
 
 EOF
-sha256sum download_dir/* >> build_info.txt
+sha256sum download_dir/* 2> /dev/null >> build_info.txt || true
 echo >> build_info.txt
 sha256sum output_dir/* >> build_info.txt
 sha256sum output_dir/* > output_dir/SHA256SUMS
