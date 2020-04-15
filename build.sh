@@ -13,8 +13,8 @@ AARCH64_TOOLCHAIN_URL=https://developer.arm.com/-/media/Files/downloads/gnu-a/${
 AARCH64_TOOLCHAIN_SHA256SUM=36d2cbe7c2984f2c20f562ac2f3ba524c59151adfa8ee10f1326c88de337b6d1
 
 ATF_SOURCE_VERSION=2.3-rc0
-ATF_SOURCE_FILENAME=${PKG_NAME}-v${PKG_VERSION}.tar.gz
-ATF_SOURCE_URL=https://codeload.github.com/ARM-software/arm-trusted-firmware/tar.gz/v${ATF_VERSION}
+ATF_SOURCE_FILENAME=arm-trusted-firmware-v${ATF_SOURCE_VERSION}.tar.gz
+ATF_SOURCE_URL=https://codeload.github.com/ARM-software/arm-trusted-firmware/tar.gz/v${ATF_SOURCE_VERSION}
 ATF_SOURCE_SHA256SUM=d0f2c71462c43e5815f8d906558782f7c583e4c07cc972aa8a53124ca8b48886
 ATF_BUILD_EPOCH=1586976479
 
