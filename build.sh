@@ -102,7 +102,10 @@ build epoch: $ATF_BUILD_EPOCH
 EOF
 sha256sum download_dir/* 2> /dev/null >> build_info.txt || true
 echo >> build_info.txt
-tar -C output_dir/ -czf output_dir/atf-v${ATF_SOURCE_VERSION}.tar.gz .
+tar -C output_dir/ --mtime "@${ATF_BUILD_EPOCH}" \
+  --owner=0 --group=0 --numeric-owner --sort=name \
+  -czf atf-v${ATF_SOURCE_VERSION}.tar.gz .
+mv atf-v${ATF_SOURCE_VERSION}.tar.gz output_dir
 sha256sum output_dir/* >> build_info.txt
 sha256sum output_dir/* > output_dir/SHA256SUMS
 
