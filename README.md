@@ -28,3 +28,9 @@ TARGET=bl31
 BINARY_FORMAT=elf
 ARCH=aarch64
 ```
+
+### Contact
+Please open issues or push requests for any issues encountered.  
+
+[Tobias Mädel (@manawyrm)](https://twitter.com/Manawyrm ) <t.maedel@alfeld.de>  
+[Tobias Schramm (@tsys)](https://twitter.com/Toble_Miner) <t.schramm@manjaro.org>  
