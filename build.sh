@@ -102,3 +102,5 @@ sha256sum download_dir/* 2> /dev/null >> build_info.txt || true
 echo >> build_info.txt
 sha256sum output_dir/* >> build_info.txt
 sha256sum output_dir/* > output_dir/SHA256SUMS
+
+cat build_info.txt
