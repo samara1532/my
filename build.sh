@@ -81,12 +81,13 @@ for target in targets/*.sh; do
     *) die Invalid arch "$ARCH";;
   esac
 
+  export SOURCE_DATE_EPOCH="$ATF_BUILD_EPOCH"
+
   make -C "$ATF_DIR" \
     CROSS_COMPILE="$CROSS_COMPILE" \
     M0_CROSS_COMPILE="$CROSS_COMPILE_ARM" \
     CROSS_CM3="$CROSS_COMPILE_ARM" \
     PLAT="$PLAT" \
-    SOURCE_DATE_EPOCH="$ATF_BUILD_EPOCH" \
     $MAKE_FLAGS \
     "$TARGET"
 
