@@ -9,6 +9,7 @@ script:
 
 os: linux
 dist: bionic
+# nothing, just to trigger a new github actions build
 
 deploy:
   provider: releases
