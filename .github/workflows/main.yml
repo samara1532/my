@@ -36,5 +36,6 @@ jobs:
         with:
           draft: true
           files: $GITHUB_WORKSPACE/build_dir/*
+          tag_name: test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
