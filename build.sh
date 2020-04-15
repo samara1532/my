@@ -88,7 +88,7 @@ for target in targets/*.sh; do
     PLAT="$PLAT" \
     SOURCE_DATE_EPOCH="$ATF_BUILD_EPOCH" \
     BUILD_STRING="v$ATF_SOURCE_VERSION" \
-    LC_ALL=C.UTF-8 \
+    LC_ALL=C \
     $MAKE_FLAGS \
     "$TARGET"
 
