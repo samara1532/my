@@ -2,35 +2,85 @@
 
 set -x -e -o pipefail
 
-rm -rf build_dir
-rm -rf source_dir
+ARM_TOOLCHAIN_VERSION=9.2-2019.12
+ARM_TOOLCHAIN_FILENAME=gcc-arm-${ARM_TOOLCHAIN_VERSION}-x86_64-arm-none-eabi.tar.xz
+ARM_TOOLCHAIN_URL=https://developer.arm.com/-/media/Files/downloads/gnu-a/${ARM_TOOLCHAIN_VERSION}/binrel/${ARM_TOOLCHAIN_FILENAME}
+ARM_TOOLCHAIN_SHA256SUM=ac952d89ae0fc3543e81099e7d34917efc621f5def112eee843fd1ce755eca8c
 
-mkdir build_dir
-mkdir source_dir
+AARCH64_TOOLCHAIN_VERSION=9.2-2019.12
+AARCH64_TOOLCHAIN_FILENAME=gcc-arm-${AARCH64_TOOLCHAIN_VERSION}-x86_64-aarch64-none-elf.tar.xz
+AARCH64_TOOLCHAIN_URL=https://developer.arm.com/-/media/Files/downloads/gnu-a/${AARCH64_TOOLCHAIN_VERSION}/binrel/${AARCH64_TOOLCHAIN_FILENAME}
+AARCH64_TOOLCHAIN_SHA256SUM=36d2cbe7c2984f2c20f562ac2f3ba524c59151adfa8ee10f1326c88de337b6d1
 
-PKG_NAME=arm-trusted-firmware
-PKG_VERSION=2.3-rc0
+ATF_SOURCE_VERSION=2.3-rc0
+ATF_SOURCE_FILENAME=${PKG_NAME}-v${PKG_VERSION}.tar.gz
+ATF_SOURCE_URL=https://codeload.github.com/ARM-software/arm-trusted-firmware/tar.gz/v${ATF_VERSION}
+ATF_SOURCE_SHA256SUM=d0f2c71462c43e5815f8d906558782f7c583e4c07cc972aa8a53124ca8b48886
+ATF_BUILD_EPOCH=1586976479
 
-PKG_SOURCE=${PKG_NAME}-v${PKG_VERSION}.tar.gz
-PKG_SOURCE_URL=https://codeload.github.com/ARM-software/arm-trusted-firmware/tar.gz/v${PKG_VERSION}?
-PKG_HASH=d0f2c71462c43e5815f8d906558782f7c583e4c07cc972aa8a53124ca8b48886
+die() {
+  echo "$@" 1>&2
+  exit 1
+}
 
-wget -O ${PKG_SOURCE} ${PKG_SOURCE_URL}
+download_and_check() {
+  local URL="$1"
+  local FILENAME="$2"
+  local SHA256SUM="$3"
 
-#todo hash check
+  wget --retry-connrefused --waitretry=1 --read-timeout=20 \
+    --timeout=15 -t 5 -O "$FILENAME" "$URL"
+  shasum="$(sha256sum "$FILENAME" | cut -d' ' -f1 | tr '[:upper:]' '[:lower:]')"
+  if [[ "$shasum" == "$SHA256SUM"  ]]; then
+    return 0
+  fi
+  rm -f "$FILENAME"
+  die "Checksum missmatch on $FILENAME, $shasum != $SHA256SUM"
+}
 
-tar -C source_dir/ -xzf ${PKG_SOURCE}
+extract() {
+  $ARCHIVE="$1"
 
-ATF_DIR=source_dir/${PKG_NAME}-${PKG_VERSION}/
+  mkdir -p "${ARCHIVE}_extracted"
+  tar -C "${ARCHIVE}_extracted" -xaf "$ARCHIVE"
+  realpath "${ARCHIVE}_extracted"/*
+}
 
-make -C ${ATF_DIR} \
-CROSS_COMPILE="aarch64-linux-gnu-" \
-M0_CROSS_COMPILE="arm-none-eabi-" \
-PLAT=rk3399 \
-bl31
+echo "Downloading ARM toolchain ..."
+download_and_check "$ARM_TOOLCHAIN_URL" "$ARM_TOOLCHAIN_FILENAME" "$ARM_TOOLCHAIN_SHA256SUM"
+echo "Downloading AARCH64 toolchain ..."
+download_and_check "$AARCH64_TOOLCHAIN_URL" "$AARCH64_TOOLCHAIN_FILENAME" "$AARCH64_TOOLCHAIN_SHA256SUM"
+echo "Downloading ATF source ..."
+download_and_check "$ATF_SOURCE_URL" "$ATF_SOURCE_FILENAME" "$ATF_SOURCE_SHA256SUM"
 
-pwd
-ls -lah
-ls -lah ${ATF_DIR}/build/rk3399/release/bl31
-cp ${ATF_DIR}/build/rk3399/release/bl31/bl31.elf build_dir/
-ls -lah build_dir
+echo "Extracting ARM toolchain ..."
+CROSS_COMPILE_ARM="$(extract "$ARM_TOOLCHAIN_FILENAME")"/arm-none-eabi-
+echo "Extracting AARCH64 toolchain ..."
+CROSS_COMPILE_AARCH64="$(extract "$AARCH64_TOOLCHAIN_FILENAME")"/aarch64-none-elf-
+
+rm -rf output_dir
+mkdir output_dir
+
+for target in targets/*.sh; do
+  # Unpack clean tree
+  ATF_DIR="$(extract "$ATF_SOURCE_FILENAME")"
+
+  unset PLAT TARGET BINARY_FORMAT ARCH
+  . "$target"
+
+  case "$ARCH" in
+    aarch64) CROSS_COMPILE="$CROSS_COMPILE_AARCH64";;
+    arm) CROSS_COMPILE="$CROSS_COMPILE_ARM";;
+    *) die Invalid arch "$ARCH";;
+  esac
+
+  make -C "$ATF_DIR" \
+    CROSS_COMPILE="$CROSS_COMPILE" \
+    M0_CROSS_COMPILE="$CROSS_COMPILE_ARM" \
+    CROSS_CM3="$CROSS_COMPILE_ARM" \
+    PLAT="$PLAT" \
+    "$TARGET"
+
+  cp ${ATF_DIR}/build/${PLAT}/release/${TARGET}/${TARGET}.${BINARY_FORMAT} output_dir/
+  rm -rf ${ATF_DIR}
+done

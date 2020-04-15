@@ -1,0 +1,5 @@
+PLAT=rk3399
+TARGET=bl31
+BINARY_FORMAT=elf
+ARCH=aarch64
+
