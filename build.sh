@@ -32,7 +32,7 @@ download_and_check() {
   mkdir -p "download_dir"
   rm -f "$FILENAME"
   wget --retry-connrefused --waitretry=1 --read-timeout=20 \
-    --timeout=15 -t 5 -O "$FILENAME" "$URL"
+    --timeout=15 -t 5 --quiet -O "$FILENAME" "$URL"
   shasum="$(sha256sum "$FILENAME" | cut -d' ' -f1 | tr '[:upper:]' '[:lower:]')"
   if [[ "$shasum" == "$SHA256SUM"  ]]; then
     echo "$FILENAME"
@@ -81,13 +81,14 @@ for target in targets/*.sh; do
     *) die Invalid arch "$ARCH";;
   esac
 
-  export SOURCE_DATE_EPOCH="$ATF_BUILD_EPOCH"
-
   make -C "$ATF_DIR" \
     CROSS_COMPILE="$CROSS_COMPILE" \
     M0_CROSS_COMPILE="$CROSS_COMPILE_ARM" \
     CROSS_CM3="$CROSS_COMPILE_ARM" \
     PLAT="$PLAT" \
+    SOURCE_DATE_EPOCH="$ATF_BUILD_EPOCH" \
+    BUILD_STRING="v$ATF_SOURCE_VERSION" \
+    LC_ALL=C.UTF-8 \
     $MAKE_FLAGS \
     "$TARGET"
 
