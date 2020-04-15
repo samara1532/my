@@ -29,3 +29,12 @@ jobs:
         sudo apt-get -y install gcc-arm-none-eabi gcc-aarch64-linux-gnu
         cd "$GITHUB_WORKSPACE"
         bash ./build.sh
+
+    - name: Release
+        uses: softprops/action-gh-release@v1
+        #if: startsWith(github.ref, 'refs/tags/')
+        draft: true
+        with:
+          files: $GITHUB_WORKSPACE/build_dir/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
