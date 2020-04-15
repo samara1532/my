@@ -20,22 +20,22 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Check out repo
+        uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Prepare and run build
         run: |
           sudo apt-get update
-          sudo apt-get -y install gcc-arm-none-eabi gcc-aarch64-linux-gnu
+          sudo apt-get -y install build-essential
           cd "$GITHUB_WORKSPACE"
           bash ./build.sh
 
-      - name: Release
+      - name: Release build artifacts
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           body_path: build_info.txt
-          draft: true
           files: output_dir/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
