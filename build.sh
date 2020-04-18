@@ -72,8 +72,10 @@ for target in targets/*.sh; do
   # Unpack clean tree
   ATF_DIR="$(extract "$ATF_SOURCE_FILENAME")"
 
-  unset PLAT TARGET BINARY_FORMAT ARCH MAKE_FLAGS
+  unset PLAT TARGET BINARY_PATH ARCH MAKE_FLAGS
   . "$target"
+
+  BINARY_FORMAT="${BINARY_PATH#*.}"
 
   case "$ARCH" in
     aarch64) CROSS_COMPILE="$CROSS_COMPILE_AARCH64";;
@@ -92,14 +94,8 @@ for target in targets/*.sh; do
     $MAKE_FLAGS \
     "$TARGET"
 
-  [ "$BINARY_FORMAT" = "elf" ] && \
-    SRC="${ATF_DIR}/build/${PLAT}/release/${TARGET}/${TARGET}.${BINARY_FORMAT}"
-
-  [ "$BINARY_FORMAT" = "bin" ] && \
-    SRC="${ATF_DIR}/build/${PLAT}/release/${TARGET}.${BINARY_FORMAT}"
-
-  cp "$SRC" "output_dir/${PLAT}_${TARGET}.${BINARY_FORMAT}"
-  rm -rf "${ATF_DIR}"
+  cp ${ATF_DIR}/build/${PLAT}/release/${BINARY_PATH} output_dir/${PLAT}_${TARGET}.${BINARY_FORMAT}
+  rm -rf ${ATF_DIR}
 done
 
 cat << EOF > build_info.txt

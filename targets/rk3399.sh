@@ -1,5 +1,5 @@
 PLAT=rk3399
 TARGET=bl31
-BINARY_FORMAT=elf
+BINARY_PATH=bl31/bl31.elf
 ARCH=aarch64
 

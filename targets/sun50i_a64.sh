@@ -1,4 +1,4 @@
 PLAT=sun50i_a64
 TARGET=bl31
-BINARY_FORMAT=bin
+BINARY_PATH=bl31.bin
 ARCH=aarch64
