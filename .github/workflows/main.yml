@@ -31,13 +31,15 @@ jobs:
           sudo apt-get -y install build-essential
           cd "$GITHUB_WORKSPACE"
           bash ./build.sh
+          echo "DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+          echo "EPOCH=$(date +%s)" >> $GITHUB_ENV
 
       - name: Release build artifacts
         uses: ncipollo/release-action@v1.12.0
         with:
           allowUpdates: true
           prerelease: false
-          name: V2.8.4
-          tag: V2.8.4
+          name: V2.8.4 ${{ env.DATE }}
+          tag: V2.8.4-${{ env.EPOCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: output_dir/*
