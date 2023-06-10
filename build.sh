@@ -110,19 +110,19 @@ done
 # download ddr.bin,rk3568/88_bl31.elf from https://github.com/rkbin/
 # rk356x
 
-wget https://github.com/mj22226/rkbin/raw/2023.04/bin/rk35/rk3568_ddr_1056MHz_v1.15.bin -O output_dir/rk3568_ddr.bin
-sha256sum -c <<<"0547bfb6d90391216d2f138b5ca9e2f31185cfaf49d8ddc29ba5ca2fc292b4bb  output_dir/rk3568_ddr.bin"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_ddr_1560MHz_v1.16.bin -O output_dir/rk3568_ddr.bin
+sha256sum -c <<<"afb565474cd1dc1e174f2b1bc503a90d31b2990fca572859796e108dec7fc0f8  output_dir/rk3568_ddr.bin"
 
-wget https://github.com/mj22226/rkbin/raw/2023.04/bin/rk35/rk3568_bl31_v1.37.elf -O output_dir/rk3568_bl31.elf
-sha256sum -c <<<"e6f8abaae908160a5d11d24bab0d68e8f8a80b6ac9ddd6166a059b1ee95313ef  output_dir/rk3568_bl31.elf"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_bl31_v1.42.elf -O output_dir/rk3568_bl31.elf
+sha256sum -c <<<"b2eabb56105e2b6f6c63a2aa8eca9408263f08fb68cf3f0b27c2419ad21a9963  output_dir/rk3568_bl31.elf"
 
 # rk3588
 
-wget https://raw.githubusercontent.com/mj22226/rkbin/2023.04/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.09.bin -O output_dir/rk3588_ddr.bin
-sha256sum -c <<<"6166b7b5758f415e3ff8044f832b1b361ba05b3d4ee716f9a26884d13f6e8b3b  output_dir/rk3588_ddr.bin"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.11.bin -O output_dir/rk3588_ddr.bin
+sha256sum -c <<<"61a44b0f53451d228cb30c6330f58fcf5b531ad9900e413fa3dc65747211bc1e  output_dir/rk3588_ddr.bin"
 
-wget https://raw.githubusercontent.com/mj22226/rkbin/2023.04/bin/rk35/rk3588_bl31_v1.36.elf -O output_dir/rk3588_bl31.elf
-sha256sum -c <<<"88a109e98591fc10da5e9bd3ca2d6ec9101a9b5041510d83fc2197dacb95e9bd  output_dir/rk3588_bl31.elf"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_bl31_v1.38.elf -O output_dir/rk3588_bl31.elf
+sha256sum -c <<<"51848cc64e12e0fe82a23e43b4628b5b5805b4ec689b260f27fb409d30d3b30b  output_dir/rk3588_bl31.elf"
 
 cat << EOF > build_info.txt
 build epoch: $ATF_BUILD_EPOCH
