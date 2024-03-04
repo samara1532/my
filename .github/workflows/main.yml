@@ -30,11 +30,11 @@ jobs:
           echo "EPOCH=$(date +%s)" >> $GITHUB_ENV
 
       - name: Release build artifacts
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           prerelease: false
-          name: v2.10.0 ${{ env.DATE }}
-          tag: v2.10.0-${{ env.EPOCH }}
+          name: v2.10.2 ${{ env.DATE }}
+          tag: v2.10.2-${{ env.EPOCH }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: output_dir/*

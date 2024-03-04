@@ -12,10 +12,10 @@ AARCH64_TOOLCHAIN_FILENAME=gcc-arm-${AARCH64_TOOLCHAIN_VERSION}-x86_64-aarch64-n
 AARCH64_TOOLCHAIN_URL=https://developer.arm.com/-/media/Files/downloads/gnu-a/${AARCH64_TOOLCHAIN_VERSION}/binrel/${AARCH64_TOOLCHAIN_FILENAME}
 AARCH64_TOOLCHAIN_SHA256SUM=6f74b1ee370caeb716688d2e467e5b44727fdc0ed56023fe5c72c0620019ecef
 
-ATF_SOURCE_VERSION=2.10.0
+ATF_SOURCE_VERSION=2.10.2
 ATF_SOURCE_FILENAME=trusted-firmware-a-v${ATF_SOURCE_VERSION}.tar.gz
-ATF_SOURCE_URL=https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/snapshot/trusted-firmware-a-v${ATF_SOURCE_VERSION}.tar.gz
-ATF_SOURCE_SHA256SUM=b7318ef657f75697482913d288d961074c89944c3966a62de40b716f0e965e8a
+ATF_SOURCE_URL=https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git/snapshot/trusted-firmware-a-lts-v${ATF_SOURCE_VERSION}.tar.gz
+ATF_SOURCE_SHA256SUM=70d2104e75f3dc1daf01b73ec31d81ddefb81bdacf66f9052ad7b0cf53a064c0
 # Set fixed build timestamp for reproducible builds
 ATF_BUILD_EPOCH=$(date +%s)
 
@@ -110,19 +110,19 @@ done
 # download ddr.bin,rk3568/88_bl31.elf from https://github.com/rkbin/
 # rk356x
 
-wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_ddr_1560MHz_v1.18.bin -O output_dir/rk3568_ddr.bin
-sha256sum -c <<<"9e6200ca13f846379bae703b036d42e280888ab3a8143999380bdc9898d04322 output_dir/rk3568_ddr.bin"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_ddr_1560MHz_v1.21.bin -O output_dir/rk3568_ddr.bin
+sha256sum -c <<<"bb19ec7197116d4e12580f947d2b9041876c78f3bdd02e1ab8cd6300c3a8c3de output_dir/rk3568_ddr.bin"
 
-wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_bl31_v1.43.elf -O output_dir/rk3568_bl31.elf
-sha256sum -c <<<"53b9371beeaa0c6a3c0235a0f069adc719ff9028a7863772ce5eef24156ab07c output_dir/rk3568_bl31.elf"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3568_bl31_v1.44.elf -O output_dir/rk3568_bl31.elf
+sha256sum -c <<<"65110f822fdbdd0163ce2dabc60591e7a8a0ffbc9471780e29eef0062f9ed7b6 output_dir/rk3568_bl31.elf"
 
 # rk3588
 
-wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2736MHz_v1.12.bin -O output_dir/rk3588_ddr.bin
-sha256sum -c <<<"ab20fa76d5535bb95c427b117b242510316b8c27889639dd0c4c2a44832cfb2f  output_dir/rk3588_ddr.bin"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.16.bin -O output_dir/rk3588_ddr.bin
+sha256sum -c <<<"5aa6271195e422a2c30a8e801baa64e4a10cbc6a5f1963f9a29e6dc85096c7bf  output_dir/rk3588_ddr.bin"
 
-wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_bl31_v1.40.elf -O output_dir/rk3588_bl31.elf
-sha256sum -c <<<"28bc9ed587d01167098228530cad114482e1f30faa1a6d9744bfc7b05944d36f output_dir/rk3588_bl31.elf"
+wget https://github.com/rockchip-linux/rkbin/raw/master/bin/rk35/rk3588_bl31_v1.45.elf -O output_dir/rk3588_bl31.elf
+sha256sum -c <<<"8c404d9cf05591127542adec0eb92b066cf19d3c6aaffd097f7112e17e8b3044 output_dir/rk3588_bl31.elf"
 
 cat << EOF > build_info.txt
 build epoch: $ATF_BUILD_EPOCH
