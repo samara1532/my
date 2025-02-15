@@ -1,20 +1,4 @@
 #!/bin/sh
-
-REPO="https://github.com/itdoginfo/podkop/releases/tag/v0.2.5"
-
-IS_SHOULD_RESTART_NETWORK=
-DOWNLOAD_DIR="/tmp/podkop"
-mkdir -p "$DOWNLOAD_DIR"
-
-main() {
-    check_system
-
-    wget -qO- "$REPO" | grep -o 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/podkop_0.2.5-1_all.ipk' 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/luci-app-podkop_0.2.5_all.ipk' 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/luci-i18n-podkop-ru_0.2.5.ipk' | while read -r url; do
-        filename=$(basename "$url")
-        echo "Download $filename..."
-        wget -q -O "$DOWNLOAD_DIR/$filename" "$url"
-    done
-
     echo "opkg update"
     opkg update
 
@@ -63,34 +47,9 @@ main() {
             esac
         done
     else
-        echo "Installed podkop..."
         add_tunnel
     fi
-
-    opkg install $DOWNLOAD_DIR/podkop*.ipk
-    opkg install $DOWNLOAD_DIR/luci-app-podkop*.ipk
-
-    echo "Русский язык интерфейса ставим? y/n (Need a Russian translation?)"
-    while true; do
-        read -r -p '' RUS
-        case $RUS in
-        y)
-            opkg install $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
-            break
-            ;;
-
-        n)
-            break
-            ;;
-
-        *)
-            echo "Please enter y or n"
-            ;;
-        esac
-    done
-
-    rm -f $DOWNLOAD_DIR/podkop*.ipk $DOWNLOAD_DIR/luci-app-podkop*.ipk $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
-
+    
     if [ "$IS_SHOULD_RESTART_NETWORK" ]; then
         printf "\033[32;1mRestart network\033[0m\n"
         /etc/init.d/network restart
