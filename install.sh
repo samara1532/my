@@ -9,7 +9,7 @@ mkdir -p "$DOWNLOAD_DIR"
 main() {
     check_system
 
-    wget -qO- "$REPO" | grep -o 'https://[^"]*\.ipk' | while read -r url; do
+    wget -qO- "$REPO" | grep -o 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/podkop_0.2.5-1_all.ipk' 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/luci-app-podkop_0.2.5_all.ipk' 'https://github.com/itdoginfo/podkop/releases/download/v0.2.5/luci-i18n-podkop-ru_0.2.5.ipk' | while read -r url; do
         filename=$(basename "$url")
         echo "Download $filename..."
         wget -q -O "$DOWNLOAD_DIR/$filename" "$url"
