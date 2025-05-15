@@ -1,7 +1,3 @@
-setlocal enabledelayedexpansion
-chcp 65001 > NUL
-
-REM Проверка Python 3
 :CheckPython
 python --version 2>NUL | findstr /I "Python 3" >NUL
 if ERRORLEVEL 1 (
